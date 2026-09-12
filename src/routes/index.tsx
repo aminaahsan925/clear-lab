@@ -18,7 +18,7 @@ type ReportResult = {
   scheduling: { chosen_slot: { doctor_name: string; specialty: string; date: string; time: string; hospital_type: "government" | "private" }; reason: string };
 };
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE = import.meta.env["VITE_API_BASE_URL"] || "http://localhost:8000";
 const acceptedTypes = ["image/jpeg", "image/png", "image/webp"];
 const steps = ["Reading report", "Preparing explanation", "Checking urgency", "Finding appointment"];
 
