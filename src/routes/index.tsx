@@ -1,12 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight, CalendarDays, Check, CheckCircle2, ChevronDown, CircleAlert,
-  Clock3, FileImage, HeartPulse, Languages, MapPin, Phone, RotateCcw,
+  ArrowRight, Brain, CalendarCheck, CalendarDays, Check, CheckCircle2, ChevronDown, CircleAlert,
+  Clock3, FileImage, Gauge, Languages, MapPin, MessageCircle, Phone, RotateCcw, ScanLine,
   ShieldCheck, Stethoscope, UploadCloud, UserRound, X,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, type DragEvent, type FormEvent } from "react";
 
 import heroImage from "@/assets/sehat-clinic-hero.jpg";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -34,9 +35,12 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-function Brand() {
-  return <div className="flex items-center gap-2.5"><span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground"><HeartPulse className="size-5" /></span><span className="font-display text-lg font-bold">Sehat Sahulat</span></div>;
-}
+const pipeline = [
+  { icon: ScanLine, title: "Reads your report", body: "Every test name, value, unit and reference range is pulled from the photo and flagged normal, high or low." },
+  { icon: Brain, title: "Explains it simply", body: "Each result is rewritten in everyday English and Urdu, with a practical next step for you." },
+  { icon: Gauge, title: "Rates the urgency", body: "Routine, Needs Attention or Urgent — with the reasoning behind the rating in one short line." },
+  { icon: CalendarCheck, title: "Suggests care", body: "A realistic appointment with the right specialist, at a government or private hospital." },
+];
 
 function Index() {
   const [file, setFile] = useState<File | null>(null);
@@ -85,13 +89,7 @@ function Index() {
 
   return (
     <main className="min-h-screen overflow-hidden bg-background">
-      <header className="absolute inset-x-0 top-0 z-20 h-20 border-b border-foreground/10 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-5 lg:px-8">
-          <Brand />
-          <nav className="hidden items-center gap-8 text-sm font-semibold md:flex"><a href="#how" className="hover:text-primary">How it works</a><a href="#upload" className="hover:text-primary">Analyze report</a><span className="flex items-center gap-2 text-muted-foreground"><ShieldCheck className="size-4 text-primary" /> Private & secure</span></nav>
-          <Button size="sm" asChild><a href="#upload">Get started <ArrowRight className="size-4" /></a></Button>
-        </div>
-      </header>
+      <SiteHeader floating />
 
       <section className="relative min-h-[760px] pt-20 lg:min-h-[820px]">
         <img src={heroImage} alt="Doctor explaining a lab report to a patient" width={1600} height={1100} fetchPriority="high" className="absolute inset-0 size-full object-cover object-[66%_center]" />
@@ -108,7 +106,35 @@ function Index() {
       </section>
 
       <section id="how" className="border-b border-border bg-card py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8"><div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-primary">Made for real people</p><h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl">Less medical jargon.<br />More peace of mind.</h2></div><p className="max-w-2xl text-base leading-7 text-muted-foreground">A report can feel overwhelming. Sehat Sahulat turns complex values into clear guidance, while helping you understand when—and where—to seek care.</p></div></div>
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-primary">Made for real people</p><h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl">Less medical jargon.<br />More peace of mind.</h2></div><p className="max-w-2xl text-base leading-7 text-muted-foreground">A report can feel overwhelming. Sehat Sahulat turns complex values into clear guidance, while helping you understand when—and where—to seek care.</p></div>
+
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {pipeline.map((item, index) => (
+              <article key={item.title} className="group rounded-2xl border border-border bg-background p-6 transition-colors hover:border-primary/45">
+                <div className="flex items-center justify-between">
+                  <span className="grid size-11 place-items-center rounded-xl bg-secondary text-primary"><item.icon className="size-5" /></span>
+                  <span className="font-display text-xs text-muted-foreground">0{index + 1}</span>
+                </div>
+                <h3 className="mt-5 font-display text-lg font-semibold">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12 grid gap-6 rounded-2xl bg-hero p-8 text-primary-foreground sm:grid-cols-3">
+            {[["4", "AI agents working together"], ["2", "Languages, side by side"], ["~30s", "From photo to guidance"]].map(([value, label]) => (
+              <div key={label}>
+                <p className="font-display text-4xl font-semibold text-accent">{value}</p>
+                <p className="mt-2 text-sm text-primary-foreground/70">{label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Button variant="secondary" asChild><Link to="/how-it-works">See the full process <ArrowRight className="size-4" /></Link></Button>
+          </div>
+        </div>
       </section>
 
       <section id="upload" className="py-20 sm:py-28">
