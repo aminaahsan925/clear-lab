@@ -65,7 +65,10 @@ export const Route = createFileRoute("/api/mentor")({
         };
         const reply = data.choices?.[0]?.message?.content?.trim();
         if (!reply) {
-          return Response.json({ error: "The mentor had no answer. Please rephrase." }, { status: 502 });
+          return Response.json(
+            { error: "The mentor had no answer. Please rephrase." },
+            { status: 502 },
+          );
         }
         return Response.json({ reply });
       },

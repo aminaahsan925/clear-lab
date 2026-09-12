@@ -1,6 +1,6 @@
 # Health Insights Hub
 
-backend  fullnclear goal oriend
+backend fullnclear goal oriend
 
 Ran 3 commands, read 2 files
 
@@ -22,7 +22,7 @@ Body: file = the uploaded image (JPEG, PNG, or WEBP only)
 
 Health check (useful to verify backend is alive):
 
-GET http://localhost:8000/api/health  →  {"status": "ok"}
+GET http://localhost:8000/api/health → {"status": "ok"}
 
 Note: current frontend hardcodes http://localhost:8000 — this needs to change to a Codespaces-forwarded URL or an environment-based config if you're not running both on the same machine/port setup.
 
@@ -32,7 +32,7 @@ json
 
 {
 
-  "extraction": {
+"extraction": {
 
     "values": [
 
@@ -54,9 +54,9 @@ json
 
     "raw_notes": null
 
-  },
+},
 
-  "interpretation": {
+"interpretation": {
 
     "items": [
 
@@ -76,17 +76,17 @@ json
 
     "disclaimer": "This is not a medical diagnosis. Please consult a doctor for confirmation."
 
-  },
+},
 
-  "urgency": {
+"urgency": {
 
     "urgency": "Routine",
 
     "reasoning": "..."
 
-  },
+},
 
-  "scheduling": {
+"scheduling": {
 
     "chosen_slot": {
 
@@ -104,7 +104,7 @@ json
 
     "reason": "..."
 
-  }
+}
 
 }
 
@@ -112,13 +112,13 @@ flag is always one of: normal, high, low, unknown. urgency is always one of: Rou
 
 Error responses to handle in the UI
 
-Status	When	What to show user
+Status When What to show user
 
-400	Wrong file type, or empty file	"Please upload a JPEG, PNG, or WEBP image"
+400 Wrong file type, or empty file "Please upload a JPEG, PNG, or WEBP image"
 
-422	No values could be extracted (blurry/bad photo)	"Could not read this report clearly. Try a clearer photo."
+422 No values could be extracted (blurry/bad photo) "Could not read this report clearly. Try a clearer photo."
 
-500	Any agent in the pipeline crashed	"Something went wrong processing your report. Please try again."
+500 Any agent in the pipeline crashed "Something went wrong processing your report. Please try again."
 
 What already exists in frontend/index.html (520 lines)
 
@@ -126,11 +126,11 @@ There's already a styled single-page frontend with a design system in place — 
 
 Exact prompt to give Codex
 
-I have an existing frontend/index.html for a project called Sehat Sahulat. 
+I have an existing frontend/index.html for a project called Sehat Sahulat.
 
-It's a single HTML file (no build step) that already has CSS styling and 
+It's a single HTML file (no build step) that already has CSS styling and
 
-calls a backend at http://localhost:8000/api/process via a POST request 
+calls a backend at http://localhost:8000/api/process via a POST request
 
 with FormData containing an image file.
 
@@ -140,29 +140,29 @@ I need you to:
 
 1. Review the existing index.html and keep its current visual style
 
-2. Make sure the upload flow correctly sends the image and handles the 
+2. Make sure the upload flow correctly sends the image and handles the
 
    response matching this exact JSON structure
 
-3. Display: the extracted lab values with color-coded flags (green=normal, 
+3. Display: the extracted lab values with color-coded flags (green=normal,
 
-   red=high, blue=low), the English/Urdu explanation for each abnormal 
+   red=high, blue=low), the English/Urdu explanation for each abnormal
 
-   value, an urgency badge (Routine=green, Needs Attention=orange, 
+   value, an urgency badge (Routine=green, Needs Attention=orange,
 
-   Urgent=red), and the suggested appointment (doctor name, specialty, 
+   Urgent=red), and the suggested appointment (doctor name, specialty,
 
    date, time, government/private)
 
-4. Handle these error cases gracefully: 400 (bad file type), 422 (couldn't 
+4. Handle these error cases gracefully: 400 (bad file type), 422 (couldn't
 
    read report), 500 (server error) — show a friendly message for each
 
-5. Make the API_BASE URL configurable at the top of the file instead of 
+5. Make the API_BASE URL configurable at the top of the file instead of
 
    hardcoded, since I'm running this in different environments
 
-Don't rewrite the whole file from scratch — extend what's there. Show me 
+Don't rewrite the whole file from scratch — extend what's there. Show me
 
 the diff/changes clearly.
 
@@ -180,9 +180,9 @@ Backend Spec for Lovable — Paste This Directly
 
 Lovable builds frontends from a description, so give it the full API contract in one shot. Copy everything below into Lovable's prompt box.
 
-Build a frontend for a healthcare app called "Sehat Sahulat" (means 
+Build a frontend for a healthcare app called "Sehat Sahulat" (means
 
-"Health Made Easy" in Urdu). It connects to an existing backend API — 
+"Health Made Easy" in Urdu). It connects to an existing backend API —
 
 here is the full contract:
 
@@ -214,7 +214,7 @@ GET http://localhost:8000/api/health
 
 {
 
-  "extraction": {
+"extraction": {
 
     "values": [
 
@@ -236,9 +236,9 @@ GET http://localhost:8000/api/health
 
     "raw_notes": null
 
-  },
+},
 
-  "interpretation": {
+"interpretation": {
 
     "items": [
 
@@ -258,17 +258,17 @@ GET http://localhost:8000/api/health
 
     "disclaimer": "This is not a medical diagnosis. Please consult a doctor for confirmation."
 
-  },
+},
 
-  "urgency": {
+"urgency": {
 
     "urgency": "Routine",
 
     "reasoning": "Short explanation of why this urgency level"
 
-  },
+},
 
-  "scheduling": {
+"scheduling": {
 
     "chosen_slot": {
 
@@ -286,7 +286,7 @@ GET http://localhost:8000/api/health
 
     "reason": "Why this slot was chosen"
 
-  }
+}
 
 }
 
@@ -316,51 +316,51 @@ Screen 2 — Loading state:
 
 - Show while waiting for the API response (10-30 sec)
 
-- Display 4 sequential steps with checkmarks appearing one at a time to 
+- Display 4 sequential steps with checkmarks appearing one at a time to
 
-  simulate progress: "Reading report..." → "Preparing explanation..." → 
+  simulate progress: "Reading report..." → "Preparing explanation..." →
 
   "Checking urgency..." → "Finding appointment..."
 
-  (Note: this is a visual animation only, since the real backend returns 
+  (Note: this is a visual animation only, since the real backend returns
 
-  everything in one response — time the checkmarks to appear every few 
+  everything in one response — time the checkmarks to appear every few
 
   seconds while waiting for the actual API call to finish)
 
 Screen 3 — Results screen, showing in this order:
 
-1. Extracted Values: list each test with a colored dot/icon — green for 
+1. Extracted Values: list each test with a colored dot/icon — green for
 
-   "normal", red for "high", blue for "low" — showing test name, value, 
+   "normal", red for "high", blue for "low" — showing test name, value,
 
    unit, and reference range
 
-2. Explanation: for each abnormal item, show the English explanation and 
+2. Explanation: for each abnormal item, show the English explanation and
 
-   Urdu explanation, with a toggle or side-by-side view to switch between 
+   Urdu explanation, with a toggle or side-by-side view to switch between
 
    languages
 
-3. Urgency Badge: a colored badge — green="Routine", orange="Needs 
+3. Urgency Badge: a colored badge — green="Routine", orange="Needs
 
    Attention", red="Urgent" — with the reasoning text below it
 
-4. Suggested Appointment: a card showing doctor name, specialty, date, 
+4. Suggested Appointment: a card showing doctor name, specialty, date,
 
    time, and whether it's government or private, with the reason text
 
-5. Always show this disclaimer at the bottom in muted text: "This is not 
+5. Always show this disclaimer at the bottom in muted text: "This is not
 
    a medical diagnosis. Please consult a doctor for confirmation."
 
 Screen 3 (continued) — Appointment request form below the results:
 
-- Simple form: Full Name, Phone Number, Preferred Day (dropdown: 
+- Simple form: Full Name, Phone Number, Preferred Day (dropdown:
 
   Tomorrow / This Week / Next Week)
 
-- Submit button — on submit, just show a success message (no real backend 
+- Submit button — on submit, just show a success message (no real backend
 
   call needed for this part, it's a static confirmation for the demo)
 
@@ -368,25 +368,25 @@ Screen 3 (continued) — Appointment request form below the results:
 
 - If the API returns 400: "Please upload a JPEG, PNG, or WEBP image"
 
-- If the API returns 422: "Could not read this report clearly. Please 
+- If the API returns 422: "Could not read this report clearly. Please
 
   try a clearer photo."
 
-- If the API returns 500 or the request fails/times out: "Something went 
+- If the API returns 500 or the request fails/times out: "Something went
 
   wrong processing your report. Please try again."
 
 ## Technical notes
 
-- Make the backend URL (currently http://localhost:8000) easy to change 
+- Make the backend URL (currently http://localhost:8000) easy to change
 
   in one place, since it will change when deployed
 
 - Use FormData to send the file, with the field name exactly "file"
 
-- The design should feel trustworthy and calm — this is a healthcare app 
+- The design should feel trustworthy and calm — this is a healthcare app
 
-  for patients who may be anxious about their results, not a flashy 
+  for patients who may be anxious about their results, not a flashy
 
   consumer app
 
